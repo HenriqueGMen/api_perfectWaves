@@ -1,0 +1,30 @@
+{
+  "name": "api_perfectwaves",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HenriqueGMen/api_perfectWaves.git"
+  },
+  "keywords": [],
+  "author": "Henrique Mendonça",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HenriqueGMen/api_perfectWaves/issues"
+  },
+  "homepage": "https://github.com/HenriqueGMen/api_perfectWaves#readme",
+  "devDependencies": {
+    "@types/module-alias": "^2.0.4",
+    "@types/node": "^20.11.14",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3"
+  }
+}
