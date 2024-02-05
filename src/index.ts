@@ -1,1 +1,1 @@
-console.log('Primeira configuração')
+console.log('Primeira configuração');
