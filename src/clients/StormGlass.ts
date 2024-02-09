@@ -1,9 +1,10 @@
-import { AxiosStatic } from 'axios';
+import { AxiosError, AxiosStatic } from 'axios';
 import {
   IForecastPoint,
   IStormglassForecastResponse,
   IStormglassPoint,
 } from '@src/clients/stormglass/repositories/IStormglass';
+import { ClientRequestError, StormGlassResponseError } from './ClientError';
 
 export class StormGlass {
   readonly stormGlassAPIParams =
@@ -16,15 +17,30 @@ export class StormGlass {
     lat: number,
     log: number
   ): Promise<IForecastPoint[]> {
-    const response = await this.request.get<IStormglassForecastResponse>(
-      `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${log}&params=${this.stormGlassAPIParams}&source=${this.stormGlassSourcer}`,
-      {
-        headers: {
-          Authorization: 'fake-token',
-        },
+    try {
+      const response = await this.request.get<IStormglassForecastResponse>(
+        `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${log}&params=${this.stormGlassAPIParams}&source=${this.stormGlassSourcer}`,
+        {
+          headers: {
+            Authorization: 'fake-token',
+          },
+        }
+      );
+      return this.normalizeResponse(response.data);
+    } catch (err: unknown) {
+      const axiosError =  err as AxiosError;
+
+      if(axiosError instanceof Error && axiosError.response && axiosError.response.status) {
+        throw new StormGlassResponseError(
+          `Error: ${JSON.stringify(axiosError.response.data)} Code: ${
+            axiosError.response.status
+          }`
+        )
       }
-    );
-    return this.normalizeResponse(response.data);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new ClientRequestError((err as { message: any }).message);
+    }
   }
 
   private normalizeResponse(
