@@ -54,4 +54,6 @@ describe('Stromglass client', () => {
       'Unexpected error when trying to communicate to StormGlass: Network Error'
     );
   });
+
+  
 });
