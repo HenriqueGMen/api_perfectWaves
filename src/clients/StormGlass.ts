@@ -1,10 +1,10 @@
 import { AxiosError, AxiosStatic } from 'axios';
+import { ClientRequestError, StormGlassResponseError } from '@src/clients/ClientError';
 import {
   IForecastPoint,
   IStormglassForecastResponse,
   IStormglassPoint,
 } from '@src/clients/stormglass/repositories/IStormglass';
-import { ClientRequestError, StormGlassResponseError } from './ClientError';
 
 export class StormGlass {
   readonly stormGlassAPIParams =
