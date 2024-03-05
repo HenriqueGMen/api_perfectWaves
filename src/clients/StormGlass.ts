@@ -1,4 +1,4 @@
-import { AxiosError, AxiosStatic } from 'axios';
+import { AxiosError } from 'axios';
 import { ClientRequestError, StormGlassResponseError } from '@src/clients/ClientError';
 import config, { IConfig } from 'config';
 import {
@@ -6,6 +6,7 @@ import {
   IStormglassForecastResponse,
   IStormglassPoint,
 } from '@src/clients/stormglass/repositories/IStormglass';
+import * as HTTPUtil from '@src/util/request';
 
 const stormglassResourceConfig: IConfig = config.get(
   'App.resources.StormGlass'
@@ -16,7 +17,7 @@ export class StormGlass {
     'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
   readonly stormGlassSourcer = 'noaa';
 
-  constructor(protected request: AxiosStatic) {}
+  constructor(protected request = new HTTPUtil.Request()) {}
 
   public async fetchPoints(
     lat: number,
