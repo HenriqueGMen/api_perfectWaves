@@ -36,14 +36,16 @@ export class StormGlass {
       );
       return this.normalizeResponse(response.data);
     } catch (err: unknown) {
-      const axiosError =  err as AxiosError;
-
-      if(axiosError instanceof Error && axiosError.response && axiosError.response.status) {
-        throw new StormGlassResponseError(
-          `Error: ${JSON.stringify(axiosError.response.data)} Code: ${
-            axiosError.response.status
-          }`
-        )
+      if (err instanceof AxiosError) {
+        const axiosError = err;
+    
+        if (HTTPUtil.Request.isRequestError(axiosError) && axiosError.response && axiosError.response.status) {
+          throw new StormGlassResponseError(
+            `Error: ${JSON.stringify(axiosError.response.data)} Code: ${axiosError.response.status}`
+          );
+        }
+    
+        throw new ClientRequestError((err as { message: string }).message);
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

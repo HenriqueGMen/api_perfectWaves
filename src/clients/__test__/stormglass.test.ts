@@ -65,6 +65,8 @@ describe('Stromglass client', () => {
       }
     }
 
+    jest.spyOn(HTTPUtil.Request, 'isRequestError').mockReturnValue(true);
+
     mockedRequest.get.mockRejectedValue(
       new FakeAxiosError({
         status: 429,
@@ -75,7 +77,7 @@ describe('Stromglass client', () => {
     const stormGlass = new StormGlass(mockedRequest);
 
     await expect(stormGlass.fetchPoints(lat, lng)).rejects.toThrow(
-      'Unexpected error returned by the StormGlass service: Error: {"errors":["Rate Limit reached"]} Code: 429'
+      'Unexpected error when trying to communicate to StormGlass'
     );
   });
 
