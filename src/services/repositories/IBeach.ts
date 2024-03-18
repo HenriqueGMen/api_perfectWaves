@@ -6,6 +6,7 @@ export enum BeachPosition {
 }
 
 export interface IBeach {
+ _id?: string,
  name: string;
  position: BeachPosition;
  lat: number;
